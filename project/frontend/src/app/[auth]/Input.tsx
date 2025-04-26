@@ -28,7 +28,7 @@ function Input({type , placeholder, setFieldState}: Inputprops) {
   return (
     <input 
       type={type} 
-      className=' bg-white w-full h-9 rounded-lg p-2 focus:outline-0 text-black/35' 
+      className=' bg-white w-full h-10 rounded-lg p-2 focus:outline-0 text-black/35' 
       placeholder={placeholder}
       // value={value}
       onChange={handleChange}

@@ -6,6 +6,8 @@ import { PrismaClient } from '@prisma/client';
 import cookieParser from 'cookie-parser';
 import cookieJwtAuth from './middleware/cookieJwtAuth.js';
 import logout from './routes/auth/logout.js';
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from './utils/jwt.js';
+
 const prisma = new PrismaClient();
 
 const app = express();
@@ -13,7 +15,7 @@ const PORT = 14100;
 
 
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
 
 app.use(cors({
     origin: ['http://localhost:3000', 'https://localhost:3000'],
@@ -27,6 +29,18 @@ app.get('/', (req, res) => {
 }
 );
 
+app.post('api/auth/refresh', async (req, res) => {
+const { refreshToken } = req.body;
+if (!refreshToken) return res.status(401).json({ error: 'Refresh token required' });
+
+try {
+    const newAccessToken = generateAccessToken(user);
+    res.json({ accessToken: newAccessToken });
+} catch (error) {
+    res.status(403).json({ error: 'Invalid refresh token' });
+}
+});
+
 app.post('/api/auth/signup', signuphandler);
 app.post('/api/auth/login', loginHandler);
 
@@ -37,9 +51,10 @@ app.get('/api/users', cookieJwtAuth, async (req, res) => {
 });
 
 app.get('/api/auth/verify', cookieJwtAuth, async (req, res) => {
+    // console.log('req.user', req.user);
     const user = await prisma.user.findUnique({
         where: {
-            id: req.user.id
+            id: req.user.userId
         }
     });
     if (!user) {

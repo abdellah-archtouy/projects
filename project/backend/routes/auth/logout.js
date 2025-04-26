@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 async function logout(req, res){
     try {
         res.clearCookie('token');
+        res.clearCookie('refreshToken');
         console.log('Logout successful');
         return res.status(200).json({ message: 'Logout successful' });
     

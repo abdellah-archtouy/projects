@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { useRouter } from 'next/navigation';
+import { handelRefreshToken } from "@/lib/utils";
 
 
 
@@ -10,6 +11,7 @@ export default function Home() {
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+ 
   const fetchUsers = async () => {
     try {
       const response = await axios.get("http://localhost:14100/api/auth/verify", {
@@ -20,9 +22,12 @@ export default function Home() {
       });
       setUser(response.data);
       router.push("/dashboard");
-    } catch (error) {
-      // console.error("Error fetching users:", error);
-      router.push("/auth/login");
+    } catch (error : any) {
+      if (error.status === 401) {
+        handelRefreshToken(fetchUsers());
+      }
+      else
+        router.push("/auth/login");
     } finally {
       setLoading(false);
     }

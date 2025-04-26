@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { generateAccessToken  , generateRefreshToken} from '../../utils/jwt.js';
 
 
 const prisma = new PrismaClient();
@@ -23,14 +23,16 @@ async function loginHandler(req, res)  {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        // const isPasswordValid = await bcrypt.compare(password, user.password);
-        const isPasswordValid = password === user.password;
+        const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ id: user.id }, process.env.MY_SECRET, { expiresIn: '1h' });
+    
+        const token = await generateAccessToken(user);
+        const refreshToken = await generateRefreshToken(user, prisma);
+        res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'Strict' });
 
         res.cookie('token', token, { httpOnly: false});
         return res.status(200).json({
