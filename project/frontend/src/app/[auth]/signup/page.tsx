@@ -91,15 +91,15 @@ function Signup() {
                     {lowerFields.map((field, index) => (
                         <div key={index} className='w-full flex flex-col gap-2'>
                         <h1>{field.placeholder}</h1>
-                        <Input key={index} type={field.type} placeholder={field.placeholder} setFieldState={setFieldState}></Input>
+                        <Input key={index} type={field.type} placeholder={field.placeholder} setFieldState={setFieldState} className=' bg-white text-black'></Input>
                         </div>
                     ))}
                 </div>
-                <div className='flex flex-col items-center w-[100%] justify-center gap-3'>
+                <div className='flex flex-col items-center w-full justify-center gap-3'>
                     {upperFields.map((field, index) => (
                         <div key={index} className='w-full flex flex-col gap-2'>
                         <h1>{field.placeholder}</h1>
-                        <Input key={index} type={field.type} placeholder={field.placeholder} setFieldState={setFieldState}></Input>
+                        <Input key={index} type={field.type} placeholder={field.placeholder} setFieldState={setFieldState} className=' bg-white text-black'></Input>
                         </div>
                     ))}
                 </div>

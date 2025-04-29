@@ -13,11 +13,11 @@ interface Inputprops{
     type: string;
     placeholder: string;
     setFieldState: React.Dispatch<React.SetStateAction<FormState>>;
+    className?: string;
 }
 
-function Input({type , placeholder, setFieldState}: Inputprops) {
+function Input({type , placeholder, setFieldState, className}: Inputprops) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  // const [fieldName, setFieldName] = useState('');
     placeholder = placeholder.toLowerCase();
     placeholder = placeholder.replace(/\s+/g, '');
     setFieldState(prev => ({
@@ -25,10 +25,11 @@ function Input({type , placeholder, setFieldState}: Inputprops) {
       [placeholder]: e.target.value
     }));
   };
+  
   return (
     <input 
       type={type} 
-      className=' bg-white w-full h-10 rounded-lg p-2 focus:outline-0 text-black/35' 
+      className={`w-full h-10 rounded-lg p-2 t   focus:outline-0 text-black/35 ${className}`} 
       placeholder={placeholder}
       // value={value}
       onChange={handleChange}

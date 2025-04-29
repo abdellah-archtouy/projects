@@ -102,7 +102,7 @@ function Login() {
                     {upperFields.map((field, index) => (
                         <div key={index} className='w-full flex flex-col gap-3'>
                         <h1>{field.placeholder}</h1>
-                        <Input key={index} type={field.type} placeholder={field.placeholder} setFieldState={setFieldState}></Input>
+                        <Input key={index} type={field.type} placeholder={field.placeholder} setFieldState={setFieldState} className=' bg-white text-black'></Input>
                         </div>
                     ))}
                 </div>
