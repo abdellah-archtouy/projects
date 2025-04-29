@@ -16,7 +16,7 @@ interface Inputprops{
     className?: string;
 }
 
-function Input({type , placeholder, setFieldState, className}: Inputprops) {
+function Input({type , placeholder, fieldstate, setFieldState, className}: Inputprops) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     placeholder = placeholder.toLowerCase();
     placeholder = placeholder.replace(/\s+/g, '');
@@ -32,6 +32,7 @@ function Input({type , placeholder, setFieldState, className}: Inputprops) {
       className={`w-full h-10 rounded-lg p-2 t   focus:outline-0 text-black/35 ${className}`} 
       placeholder={placeholder}
       // value={value}
+      value={fieldstate[placeholder.toLowerCase().replace(/\s+/g, '')]}
       onChange={handleChange}
        />
   )

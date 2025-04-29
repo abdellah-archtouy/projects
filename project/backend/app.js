@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import cookieJwtAuth from './middleware/cookieJwtAuth.js';
 import logout from './routes/auth/logout.js';
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from './utils/jwt.js';
+import UpdateSeettings from './routes/updateSettings.js';
 
 const prisma = new PrismaClient();
 
@@ -21,7 +22,7 @@ app.use(cors({
     origin: ['http://localhost:3000', 'https://localhost:3000'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Bearer'] 
 }));
 
 app.get('/', (req, res) => {
@@ -63,6 +64,8 @@ app.get('/api/auth/verify', cookieJwtAuth, async (req, res) => {
     return res.status(200).json(user);
 }
 );
+
+app.post('/api/settings' , cookieJwtAuth, UpdateSeettings);
 
 app.get('/api/auth/logout', cookieJwtAuth, logout);
 
